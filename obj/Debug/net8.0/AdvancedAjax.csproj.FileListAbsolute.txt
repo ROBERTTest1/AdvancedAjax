@@ -1,0 +1,8 @@
+/Users/rob/Desktop/DEV ROBERT/AdvancedAjax/AdvancedAjax/obj/Debug/net8.0/AdvancedAjax.GeneratedMSBuildEditorConfig.editorconfig
+/Users/rob/Desktop/DEV ROBERT/AdvancedAjax/AdvancedAjax/obj/Debug/net8.0/AdvancedAjax.AssemblyInfoInputs.cache
+/Users/rob/Desktop/DEV ROBERT/AdvancedAjax/AdvancedAjax/obj/Debug/net8.0/AdvancedAjax.AssemblyInfo.cs
+/Users/rob/Desktop/DEV ROBERT/AdvancedAjax/AdvancedAjax/obj/Debug/net8.0/AdvancedAjax.csproj.CoreCompileInputs.cache
+/Users/rob/Desktop/DEV ROBERT/AdvancedAjax/AdvancedAjax/obj/Debug/net8.0/AdvancedAjax.MvcApplicationPartsAssemblyInfo.cache
+/Users/rob/Desktop/DEV ROBERT/AdvancedAjax/AdvancedAjax/obj/Debug/net8.0/AdvancedAjax.RazorAssemblyInfo.cache
+/Users/rob/Desktop/DEV ROBERT/AdvancedAjax/AdvancedAjax/obj/Debug/net8.0/AdvancedAjax.RazorAssemblyInfo.cs
+/Users/rob/Desktop/DEV ROBERT/AdvancedAjax/AdvancedAjax/obj/Debug/net8.0/AdvancedAjax.sourcelink.json
