@@ -1,8 +1,8 @@
-namespace AdvancedAjax.Models
-{
-    public class Country
+namespace AdvancedAjax.Models;
+
+ public class City
     {
-        [Key]        
+        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -13,7 +13,8 @@ namespace AdvancedAjax.Models
         [MaxLength(75)]
         public required string Name { get; set; }
 
-        [MaxLength(75)]
-        public string? CurrencyName { get; set; }
+        [ForeignKey("Country")]
+        public int CountryId { get; set; } 
+
+        public virtual Country? Country { get; set; } 
     }
-}
