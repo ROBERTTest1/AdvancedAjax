@@ -2,8 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using AdvancedAjax.Models;
+using AdvancedAjax.Data;
 
-namespace WebApplication.Controllers
+namespace AdvancedAjax.Controllers
 {
     public class CountryController : Controller
     {
