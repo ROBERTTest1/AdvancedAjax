@@ -94,7 +94,24 @@ namespace AdvancedAjax.Controllers
             return RedirectToAction(nameof(Index));
         }       
 
-      
+          [ValidateAntiForgeryToken]
+        [HttpPost]
+        public IActionResult Delete(Country country)
+        {
+            try
+            {
+                _context.Attach(country);
+                _context.Entry(country).State = EntityState.Deleted;
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {     
+                _context.Entry(country).Reload();                         
+                ModelState.AddModelError("", ex.InnerException.Message);
+                return View(country);
+            }
+            return RedirectToAction(nameof(Index));
+        }
 
     }
 }
