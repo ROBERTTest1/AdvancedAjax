@@ -1,0 +1,35 @@
+# .NET Core build artifacts
+bin/
+obj/
+
+# Visual Studio files
+.vs/
+*.user
+*.userosscache
+*.suo
+*.userprefs
+
+# Rider files
+.idea/
+*.sln.iml
+
+# macOS files
+.DS_Store
+
+# Logs
+logs/
+*.log
+
+# Local configuration files
+appsettings.Development.json
+appsettings.Local.json
+
+# SQLite database files
+*.db
+*.db-shm
+*.db-wal
+
+# Other common files to ignore
+*.swp
+*.swo
+*~ 
