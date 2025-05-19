@@ -32,4 +32,19 @@ appsettings.Local.json
 # Other common files to ignore
 *.swp
 *.swo
-*~ 
+*~
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code
+.vscode/
+
+# OS generated files
+Thumbs.db
+
+# Others
+*.vs/ 
