@@ -100,5 +100,15 @@ namespace AdvancedAjax.Controllers
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public JsonResult GetCitiesByCountry(int countryId)
+        {
+            var cities = _context.Cities
+                .Where(c => c.CountryId == countryId)
+                .Select(c => new { c.Id, c.Name })
+                .ToList();
+            return Json(cities);
+        }
     }
 } 
