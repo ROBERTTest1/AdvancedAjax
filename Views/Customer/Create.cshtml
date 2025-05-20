@@ -134,6 +134,25 @@
                 $.get('@Url.Action("CreateModalForm", "Country")', function(data) {
                     $('#createModelDialog .modal-body').html(data);
                     $('#createModelDialog').modal('show');
+                    
+                    // Attach submit handler for country form
+                    $('#createCountryForm').off('submit').on('submit', function(e) {
+                        e.preventDefault();
+                        var form = $(this);
+                        $.ajax({
+                            url: form.attr('action'),
+                            type: 'POST',
+                            data: form.serialize(),
+                            success: function(response) {
+                                if (response.success) {
+                                    $("#CountryId").append(new Option(response.country.name, response.country.id));
+                                    $("#CountryId").val(response.country.id);
+                                    $("#CountryId").trigger('change');
+                                    $('#createModelDialog').modal('hide');
+                                }
+                            }
+                        });
+                    });
                 });
             }
 
@@ -142,33 +161,25 @@
                 $.get('@Url.Action("CreateModalForm", "City")', function(data) {
                     $('#createModelDialog .modal-body').html(data);
                     $('#createModelDialog').modal('show');
+                    
+                    // Attach submit handler for city form
+                    $('#createCityForm').off('submit').on('submit', function(e) {
+                        e.preventDefault();
+                        var form = $(this);
+                        $.ajax({
+                            url: form.attr('action'),
+                            type: 'POST',
+                            data: form.serialize(),
+                            success: function(response) {
+                                if (response.success) {
+                                    $("#CityId").append(new Option(response.city.name, response.city.id));
+                                    $("#CityId").val(response.city.id);
+                                    $('#createModelDialog').modal('hide');
+                                }
+                            }
+                        });
+                    });
                 });
-            }
-
-            // Function to handle country creation success
-            window.onCountryCreated = function(response) {
-                if (response.success) {
-                    // Add the new country to the dropdown
-                    $("#CountryId").append(new Option(response.country.name, response.country.id));
-                    // Select the new country
-                    $("#CountryId").val(response.country.id);
-                    // Trigger the change event to load cities
-                    $("#CountryId").trigger('change');
-                    // Close the modal
-                    $('#createModelDialog').modal('hide');
-                }
-            }
-
-            // Function to handle city creation success
-            window.onCityCreated = function(response) {
-                if (response.success) {
-                    // Add the new city to the dropdown
-                    $("#CityId").append(new Option(response.city.name, response.city.id));
-                    // Select the new city
-                    $("#CityId").val(response.city.id);
-                    // Close the modal
-                    $('#createModelDialog').modal('hide');
-                }
             }
         });
     </script>

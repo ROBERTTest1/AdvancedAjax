@@ -86,17 +86,28 @@ namespace AdvancedAjax.Controllers
         [HttpPost]
         public IActionResult Edit(Customer customer)
         {
-            if (customer.ProfilePhoto != null)
-            {
-                string uniqueFileName = GetProfilePhotoFileName(customer);
-                customer.PhotoUrl = uniqueFileName;
-            }
             if (ModelState.IsValid)
             {
-                _context.Attach(customer);
-                _context.Entry(customer).State = EntityState.Modified;
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
+                var existingCustomer = _context.Customers.AsNoTracking().FirstOrDefault(c => c.Id == customer.Id);
+                if (existingCustomer != null)
+                {
+                    // Only update the photo if a new one is uploaded
+                    if (customer.ProfilePhoto != null)
+                    {
+                        string uniqueFileName = GetProfilePhotoFileName(customer);
+                        customer.PhotoUrl = uniqueFileName;
+                    }
+                    else
+                    {
+                        // Keep the existing photo URL
+                        customer.PhotoUrl = existingCustomer.PhotoUrl;
+                    }
+
+                    _context.Attach(customer);
+                    _context.Entry(customer).State = EntityState.Modified;
+                    _context.SaveChanges();
+                    return RedirectToAction(nameof(Index));
+                }
             }
             ViewBag.Countries = GetCountries();
             ViewBag.Cities = GetCities(customer.CountryId);

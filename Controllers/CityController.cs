@@ -37,7 +37,15 @@ namespace AdvancedAjax.Controllers
             {
                 _context.Add(city);
                 _context.SaveChanges();
+                if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                {
+                    return Json(new { success = true, city = new { id = city.Id, name = city.Name } });
+                }
                 return RedirectToAction(nameof(Index));
+            }
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_CreateModalForm", city);
             }
             ViewBag.Countries = _context.Countries.ToList();
             return View(city);
@@ -109,6 +117,17 @@ namespace AdvancedAjax.Controllers
                 .Select(c => new { c.Id, c.Name })
                 .ToList();
             return Json(cities);
+        }
+
+        [HttpGet]
+        public IActionResult CreateModalForm()
+        {
+            ViewBag.Countries = _context.Countries.Select(c => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            {
+                Value = c.Id.ToString(),
+                Text = c.Name
+            }).ToList();
+            return PartialView("_CreateModalForm", new City { Code = string.Empty, Name = string.Empty });
         }
     }
 } 
