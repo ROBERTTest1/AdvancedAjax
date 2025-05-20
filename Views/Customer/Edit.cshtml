@@ -38,9 +38,13 @@
             </div>
             <div class="form-group">
                 <label asp-for="PhotoUrl" class="control-label"></label>
-                <input asp-for="PhotoUrl" class="form-control" />
+                <input asp-for="PhotoUrl" id="PhotoUrl"/>
                 <span asp-validation-for="PhotoUrl" class="text-danger"></span>
             </div>
+            @if (!string.IsNullOrEmpty(Model.PhotoUrl))
+            {
+                <img src="@Url.Content($"~/Images/{Model.PhotoUrl}")" alt="Customer Photo" style="max-width:150px;max-height:150px;" />
+            }
             <div class="form-group">
                 <label asp-for="ProfilePhoto" class="control-label"></label>
                 <input asp-for="ProfilePhoto" type="file" class="form-control" />

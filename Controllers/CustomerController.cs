@@ -42,7 +42,10 @@ namespace AdvancedAjax.Controllers
             if (ModelState.IsValid)
             {
                 string uniqueFileName = GetProfilePhotoFileName(customer);
-                customer.PhotoUrl = "/Images/image.png";
+                if (!string.IsNullOrEmpty(uniqueFileName))
+                {
+                    customer.PhotoUrl = uniqueFileName;
+                }
                 _context.Add(customer);
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
@@ -62,7 +65,15 @@ namespace AdvancedAjax.Controllers
         [HttpGet]
         public IActionResult Edit(int Id)
         {
-            var customer = _context.Customers.Include(c => c.City).FirstOrDefault(c => c.Id == Id);
+            Customer customer = _context.Customers
+                .Include(co => co.City)
+                .Where(c => c.Id == Id)
+                .FirstOrDefault();
+
+            if (customer == null)
+                return NotFound();
+
+            customer.CountryId = customer.City.CountryId;
             ViewBag.Countries = GetCountries();
             ViewBag.Cities = GetCities(customer.CountryId);
             return View(customer);
@@ -72,6 +83,11 @@ namespace AdvancedAjax.Controllers
         [HttpPost]
         public IActionResult Edit(Customer customer)
         {
+            if (customer.ProfilePhoto != null)
+            {
+                string uniqueFileName = GetProfilePhotoFileName(customer);
+                customer.PhotoUrl = uniqueFileName;
+            }
             if (ModelState.IsValid)
             {
                 _context.Attach(customer);
@@ -115,14 +131,17 @@ namespace AdvancedAjax.Controllers
 
         private List<SelectListItem> GetCities(int countryId)
         {
-            var cities = _context.Cities.Where(c => c.CountryId == countryId).ToList();
-            var lstCities = cities.Select(ct => new SelectListItem()
-            {
-                Value = ct.Id.ToString(),
-                Text = ct.Name
-            }).ToList();
-            lstCities.Insert(0, new SelectListItem() { Value = "", Text = "----Select City----" });
-            return lstCities;
+            List<SelectListItem> cities = _context.Cities
+                .Where(c => c.CountryId == countryId)
+                .OrderBy(n => n.Name)
+                .Select(n =>
+                    new SelectListItem
+                    {
+                        Value = n.Id.ToString(),
+                        Text = n.Name
+                    }).ToList();
+
+            return cities;
         }
 
 
