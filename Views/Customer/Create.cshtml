@@ -55,7 +55,10 @@
             </div>
             <div class="form-group">
                 <label asp-for="CityId" class="control-label">City</label>
-                <select asp-for="CityId" class="form-control" asp-items="ViewBag.Cities"></select>
+                <div class="input-group">
+                    <select asp-for="CityId" class="form-control" asp-items="ViewBag.Cities"></select>
+                    <button type="button" class="btn btn-link" onclick="ShowCityCreateModal()">Add New City</button>
+                </div>
                 <span asp-validation-for="CityId" class="text-danger"></span>
             </div>
             <div class="form-group pt-0 mt-0">
@@ -125,71 +128,48 @@
                     $("#CityId").append('<option value="">----Select City----</option>');
                 }
             });
-        });
 
-        function ShowCountryCreateModal() {
-            $('#createModelDialog').modal('show');
-        }
+            // Function to show country creation modal
+            window.ShowCountryCreateModal = function() {
+                $.get('@Url.Action("CreateModalForm", "Country")', function(data) {
+                    $('#createModelDialog .modal-body').html(data);
+                    $('#createModelDialog').modal('show');
+                });
+            }
 
-        function CreateCountry() {
-            var countryData = {
-                Name: $('#CountryName').val(),
-                Code: $('#CountryCode').val(),
-                CurrencyName: $('#CurrencyName').val()
-            };
+            // Function to show city creation modal
+            window.ShowCityCreateModal = function() {
+                $.get('@Url.Action("CreateModalForm", "City")', function(data) {
+                    $('#createModelDialog .modal-body').html(data);
+                    $('#createModelDialog').modal('show');
+                });
+            }
 
-            $.ajax({
-                url: '@Url.Action("Create", "Country")',
-                type: 'POST',
-                data: countryData,
-                success: function (result) {
-                    if (result.success) {
-                        // Add the new country to the dropdown
-                        var newOption = new Option(result.name, result.id, true, true);
-                        $("#CountryId").append(newOption).trigger('change');
-                        
-                        // Close the modal
-                        $('#createModelDialog').modal('hide');
-                        
-                        // Clear the form
-                        $('#CountryName').val('');
-                        $('#CountryCode').val('');
-                        $('#CurrencyName').val('');
-                    }
+            // Function to handle country creation success
+            window.onCountryCreated = function(response) {
+                if (response.success) {
+                    // Add the new country to the dropdown
+                    $("#CountryId").append(new Option(response.country.name, response.country.id));
+                    // Select the new country
+                    $("#CountryId").val(response.country.id);
+                    // Trigger the change event to load cities
+                    $("#CountryId").trigger('change');
+                    // Close the modal
+                    $('#createModelDialog').modal('hide');
                 }
-            });
-        }
-    </script>
-}
+            }
 
-<!-- Country Creation Modal -->
-<div class="modal fade" id="createModelDialog" tabindex="-1" role="dialog" aria-labelledby="createModelDialogLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="createModelDialogLabel">Create New Country</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="CountryName">Country Name</label>
-                    <input type="text" class="form-control" id="CountryName" required>
-                </div>
-                <div class="form-group">
-                    <label for="CountryCode">Country Code</label>
-                    <input type="text" class="form-control" id="CountryCode" required>
-                </div>
-                <div class="form-group">
-                    <label for="CurrencyName">Currency Name</label>
-                    <input type="text" class="form-control" id="CurrencyName" required>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="CreateCountry()">Create Country</button>
-            </div>
-        </div>
-    </div>
-</div> 
+            // Function to handle city creation success
+            window.onCityCreated = function(response) {
+                if (response.success) {
+                    // Add the new city to the dropdown
+                    $("#CityId").append(new Option(response.city.name, response.city.id));
+                    // Select the new city
+                    $("#CityId").val(response.city.id);
+                    // Close the modal
+                    $('#createModelDialog').modal('hide');
+                }
+            }
+        });
+    </script>
+} 

@@ -31,21 +31,23 @@ namespace AdvancedAjax.Controllers
             return View(country);
         }
 
-        [HttpPost]
         [ValidateAntiForgeryToken]
+        [HttpPost]
         public IActionResult Create(Country country)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(country);
                 _context.SaveChanges();
-                
                 if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
                 {
-                    return Json(new { success = true, id = country.Id, name = country.Name });
+                    return Json(new { success = true, country = new { id = country.Id, name = country.Name } });
                 }
-                
                 return RedirectToAction(nameof(Index));
+            }
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_CreateModalForm", country);
             }
             return View(country);
         }
