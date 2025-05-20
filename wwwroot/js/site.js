@@ -36,3 +36,35 @@ $(function () {
     document.getElementById("PhotoUrl").value = fileName;
   });
 });
+
+function ShowCreateModalForm() {
+  $("#createModelDialog").modal("show");
+  return;
+}
+
+function ShowCountryCreateModal() {
+  $.ajax({
+    url: "/country/CreateModalForm",
+    type: "get",
+    success: function (response) {
+      $("#createModelDialog .modal-body").html(response);
+      ShowCreateModalForm();
+    },
+  });
+  return;
+}
+
+function onCountryCreated(response) {
+  if (response.success) {
+    $("#createModelDialog").modal("hide");
+    var newOption = new Option(
+      response.country.name,
+      response.country.id,
+      true,
+      true
+    );
+    $("select[asp-for='CountryId']").append(newOption).trigger("change");
+  } else {
+    $("#createModelDialog .modal-body").html(response);
+  }
+}

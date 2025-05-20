@@ -35,9 +35,21 @@ namespace AdvancedAjax.Controllers
         [HttpPost]
         public IActionResult Create(Country country)
         {
-           _context.Add(country);
-            _context.SaveChanges();
-            return RedirectToAction(nameof(Index));
+            if (ModelState.IsValid)
+            {
+                _context.Add(country);
+                _context.SaveChanges();
+                if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                {
+                    return Json(new { success = true, country = new { id = country.Id, name = country.Name } });
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_CreateModalForm", country);
+            }
+            return View(country);
         }
 
         [HttpGet]
@@ -99,6 +111,13 @@ namespace AdvancedAjax.Controllers
                 return View(country);
             }
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public IActionResult CreateModalForm()
+        {
+            Country country = new Country { Code = string.Empty, Name = string.Empty };
+            return PartialView("_CreateModalForm", country);
         }
 
     }
