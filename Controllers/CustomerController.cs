@@ -58,7 +58,10 @@ namespace AdvancedAjax.Controllers
         [HttpGet]
         public IActionResult Details(int Id)
         {
-            var customer = _context.Customers.Include(c => c.City).FirstOrDefault(c => c.Id == Id);
+            var customer = _context.Customers
+                .Include(c => c.City)
+                .ThenInclude(city => city.Country)
+                .FirstOrDefault(c => c.Id == Id);
             return View(customer);
         }
 
