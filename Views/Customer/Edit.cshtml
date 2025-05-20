@@ -66,12 +66,14 @@
                 $('#CityId').empty();
                 if (countryId) {
                     $.getJSON('/City/GetCitiesByCountry', { countryId: countryId }, function (data) {
+                        $('#CityId').empty();
                         $('#CityId').append($('<option>').text('----Select City----').attr('value', ''));
                         $.each(data, function (i, city) {
                             $('#CityId').append($('<option>').text(city.name).attr('value', city.id));
                         });
                     });
                 } else {
+                    $('#CityId').empty();
                     $('#CityId').append($('<option>').text('----Select City----').attr('value', ''));
                 }
             });

@@ -49,7 +49,7 @@
                 <label asp-for="CountryId" class="control-label">Country</label>
                 <div class="input-group">
                     <select asp-for="CountryId" class="form-control" asp-items="ViewBag.Countries"></select>
-                    <button type="button" class="btn btn-link" onclick="ShowCountryCreateModal()">Add New Country</button>
+                    <button type="button" class="btn btn-success ms-2" style="border-radius:50%;width:36px;height:36px;padding:0;font-size:1.5rem;line-height:1;" onclick="ShowCountryCreateModal()">+</button>
                 </div>
                 <span asp-validation-for="CountryId" class="text-danger"></span>
             </div>
@@ -57,7 +57,7 @@
                 <label asp-for="CityId" class="control-label">City</label>
                 <div class="input-group">
                     <select asp-for="CityId" class="form-control" asp-items="ViewBag.Cities"></select>
-                    <button type="button" class="btn btn-link" onclick="ShowCityCreateModal()">Add New City</button>
+                    <button type="button" class="btn btn-success ms-2" style="border-radius:50%;width:36px;height:36px;padding:0;font-size:1.5rem;line-height:1;" onclick="ShowCityCreateModal()">+</button>
                 </div>
                 <span asp-validation-for="CityId" class="text-danger"></span>
             </div>
